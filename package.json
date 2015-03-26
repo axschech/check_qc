@@ -1,0 +1,24 @@
+{
+  "name": "check_qc",
+  "version": "0.0.0",
+  "description": "Checks QC",
+  "main": "check_qc.js",
+  "dependencies": {
+    "cheerio": "~0.19.0",
+    "mandrill-api": "~1.0.41",
+    "twitter": "~1.2.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/axschech/check_qc"
+  },
+  "author": "",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/axschech/check_qc/issues"
+  }
+}
