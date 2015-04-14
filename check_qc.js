@@ -33,21 +33,8 @@ var mandrill_message = {
     }]
 };
 
-
-var html = "";
 var file = 'img.json';
 var log = 'log.txt';
-var content;
-try {
-    content = JSON.parse(fs.readFileSync(file, 'utf8'));
-} catch (e) {
-    content = undefined;
-}
-
-var curImg;
-if (content !== undefined) {
-    curImg = content['img'];
-}
 var craftMessage = function(message) {
         var data = {
             time: moment().format('YYYY/MM/DD hh:mm:ss'),
@@ -57,12 +44,31 @@ var craftMessage = function(message) {
         fs.appendFileSync(log, JSON.stringify(data) + "\n", 'utf8');
 };
 var work = function () {
+    var html = "";
+    var content;
+    try {
+        content = JSON.parse(fs.readFileSync(file, 'utf8'));
+    } catch (e) {
+        content = undefined;
+    }
 
-    http.get('http://questionablecontent.net', function (response) {
+    var curImg;
+    if (content !== undefined) {
+        curImg = content['img'];
+    }
+    var dat_rand = Math.floor(Math.random() * 99999) + 1000;
+    var req = http.request(
+        {
+            hostname: 'questionablecontent.net',
+            path: '/?rand=' + dat_rand,
+            headers: {'Cache control': 'no cache'}
+        },
+        function (response) {
         response.setEncoding('utf8');
         response.on('data', function (chunk) {
             html += chunk;
         });
+
         response.on('end', function () {
             var $ = cheerio.load(html);
             $('img').each(function (img, test) {
@@ -112,7 +118,10 @@ var work = function () {
             });
         });
     });
-
+    req.on('error', function(error) {
+        console.log(error);
+    });
+    req.end();
 };
 
 work();
